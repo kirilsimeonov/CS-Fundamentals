@@ -1,0 +1,82 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace Demo_Exam_3
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            string command = Console.ReadLine();
+            int counter = 0;
+            int bestbatch = 0;
+            double sum = 0;
+            double bestSum = int.MinValue;
+            double bestAvgQuality = int.MinValue;
+            double avgQuality = int.MinValue;
+            int lowestBatchesCount = int.MaxValue;
+            List<int> BestList = new List<int>();
+            string best = string.Empty;
+
+            while (command != "Bake It!")
+            {
+                double[] batches = command.Split('#').Select(double.Parse).ToArray();
+
+                //5#3#2
+                counter++;
+
+                for (int i = 0; i < batches.Length; i++)
+                {
+                    sum += batches[i];
+
+                }
+                avgQuality = sum / batches.Length;
+                //if (batches.Length < lowestBatchesCount)
+                //{
+                //    lowestBatchesCount = batches.Length;
+                //}
+
+
+                if (sum > bestSum)
+                {
+                    bestSum = sum; //3
+
+                    bestbatch = counter;
+                    best = string.Join(" ", batches);
+                    bestAvgQuality = avgQuality;
+                    lowestBatchesCount = batches.Length;
+                }
+                else if (sum == bestSum)
+                {
+                    if (avgQuality > bestAvgQuality)
+                    {
+                        bestAvgQuality = avgQuality;
+                        bestbatch = counter;
+                        best = string.Join(" ", batches);
+                    }
+                    else if (avgQuality == bestAvgQuality)
+                    {
+                        if (batches.Length < lowestBatchesCount)
+                        {
+                            bestbatch = counter;
+                            best = string.Join(" ", batches);
+                        }
+                    }
+
+                }
+                //Console.WriteLine($"best avg quality {bestAvgQuality}");
+                //Console.WriteLine($"lowest batches count {lowestBatchesCount}");
+                sum = 0;
+                avgQuality = 0;
+                command = Console.ReadLine();
+            }
+            
+            Console.WriteLine($"Best Batch quality: {bestSum}");
+            Console.WriteLine(best);
+
+
+        }
+    }
+}
+
